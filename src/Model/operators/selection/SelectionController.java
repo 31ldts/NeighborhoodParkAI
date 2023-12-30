@@ -15,6 +15,7 @@ import java.util.Random;
 public class SelectionController{
     
     RankSelection rs;
+    NaturalSelection ns;
     Random generator;
     
     private boolean useElitism;
@@ -27,10 +28,12 @@ public class SelectionController{
         useElitism =    mp.getUSEELITISM();
         useTruncate =   mp.getUSETRUNCATE();
         truncateSize =  mp.getTRUNCATESIZE();
+        ns =			new NaturalSelection();
     }
     
     //include elitism and truncation.
     public CityTilesetPopulation apply(CityTilesetPopulation pop){
-        return rs.apply(pop,useElitism,useTruncate,generator,truncateSize);
+        //return rs.apply(pop,useElitism,useTruncate,generator,truncateSize);
+    	return ns.apply(pop, generator);
     }
 }

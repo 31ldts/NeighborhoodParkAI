@@ -38,7 +38,7 @@ public class MutationController {
     public void apply(Population<CityTileset> pop){
     	//rpm.apply(pop);
     	//pnm.apply(pop);
-    	tnm.apply(pop);//sigue dando problemas
+    	tnm.apply(pop);
     	//pem.apply(pop);
     }
 }
