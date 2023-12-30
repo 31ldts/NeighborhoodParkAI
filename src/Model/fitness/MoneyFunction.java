@@ -15,8 +15,9 @@ public class MoneyFunction {
     public static double Evaluate(CityTileset city, CityParameters ctp){
         
         Double recomendedParks = (double)(ctp.getParksPercentage()*city.getAvailableTiles())/1000;
+        //System.out.print(recomendedParks+" "+ city.getNparkTiles() +"\n");
         
-        return 1 - ((double)Math.abs(recomendedParks-city.getNparkTiles())/
+        return 1-((double)Math.abs(recomendedParks-city.getNparkTiles())/
                 recomendedParks);
     }
 }

@@ -38,7 +38,16 @@ public class RankSelection {
             sortedPop.subList(0, (int)(sortedPop.size()*truncateSize));
         }
         
-        while(aux.add(sortedPop.get(generator.nextInt(sortedPop.size())))){}
+        int i = 0;
+        while(aux.size() < aux.getMaxSize()){
+            if((double)(sortedPop.size()-(i+1))/sortedPop.size() > generator.nextDouble())
+                aux.add(new CityTileset(sortedPop.get(i)));
+            ++i;
+            i %= sortedPop.size();
+        }
+        System.out.print(i);
+        
+        //while(aux.add(sortedPop.get(generator.nextInt(sortedPop.size())))){}
             
         return aux;
     }

@@ -14,21 +14,24 @@ import Model.Individuals.Tiles.TileType;
  */
 public class ValueFunction {
     public static Double Evaluate(CityTileset city){
-        double maxPark = CityTileset.getMaxValue();
-        double minPark = CityTileset.getMinValue();
-        int counter = 0;
+        double maxPark = CityTileset.getMaxValue()* city.getNparkTiles();
+        double minPark = CityTileset.getMinValue() * city.getNparkTiles();
+        
+        double counter = 0;
         
         for (Position park : city.getArrayOfParkPositions()) {	// Get each park from the city
             int val = city.getTile(park).getValue(TileType.PARK);
             counter += val;
     	}
         
-    	double average = 0;
+        /*    	double average = 0;
         if(city.getNparkTiles() != 0){
-            average = counter / city.getNparkTiles();
-        }	// Average score of the parks
-
+        average = counter / city.getNparkTiles();
+        }	// Average score of the parks*/
+        
+        //System.out.print("mv: " + maxPark + ", minv: " + minPark + ", meanv: " +CityTileset.getMeanValue()+ ", average: " + average + "\n");
+        
     	//return (average-minPark)/(maxPark-minPark);	// Percentage of the average of the parks
-        return (average)/CityTileset.getMeanValue();
+        return (counter - minPark)/maxPark;
     }
 }

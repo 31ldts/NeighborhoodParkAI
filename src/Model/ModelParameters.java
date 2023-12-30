@@ -38,9 +38,9 @@ public class ModelParameters {
     ///< Size of the truncation if used.
     
     //Stop condition 
-    public final static int MAXREPETITIONLIMIT = 10000;
+    public final static int MAXREPETITIONLIMIT = 1000;
     ///< Max iterations of the algorithm.
-    public final static int DEFREPETITIONLIMIT = 5000;
+    public final static int DEFREPETITIONLIMIT = 1000;
     ///< Default iterations of the algorithm.
     public final static int MINREPETITIONLIMIT = 2;
     ///< Min iterations of the algorithm.
