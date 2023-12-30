@@ -37,6 +37,7 @@ public class TargetedNeighborhoodMutation extends MutationHandler {
      */
     public void apply(Population<CityTileset> pop) {
         int nNeighborhoods = pop.getArrayList().get(0).getTotalNeighborhoods();
+        int row = pop.getArrayList().get(0).getNNeighborhood();
 
         // Ensure MUTABLENEIGHBORHOODS does not exceed the number of neighborhoods
         MUTABLENEIGHBORHOODS = Math.min(MUTABLENEIGHBORHOODS, nNeighborhoods);
@@ -48,7 +49,7 @@ public class TargetedNeighborhoodMutation extends MutationHandler {
 
             // Populate totalNeighborhoods map with neighborhood indices and values
             for (int i = 0; i < nNeighborhoods; i++) {
-                this.totalNeighborhoods.put(i, city.getNeighborhoodParkValue(new Position(i % 4, i / 4)));
+            	this.totalNeighborhoods.put(i, city.getNeighborhoodParkValue(new Position(i % row, i / row)));
             }
 
             sortedNeighborhoods.clear();

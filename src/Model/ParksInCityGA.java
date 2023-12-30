@@ -65,12 +65,17 @@ public class ParksInCityGA {
         pop = initializer.Inicialize();
         int crossoverIntensity = mp.getCROSSOVERINTENSITY()*2;
         
+        this.applyFitness();
+        
         for(int i = 0; i < repetitionLimits; ++i){
             
             if(i%(repetitionLimits/10) == 0){
                 crossoverIntensity *= 0.9;
             }
             
+            //this.applyFitness();
+            
+            this.applyMutation();
             this.applyFitness();
             if(i % (repetitionLimits/10) == 0){
                 System.out.print("\n\n Generation " + i + ": " + "\n");
@@ -81,9 +86,12 @@ public class ParksInCityGA {
                         pop.getBestIndividual().getFitness());
                 System.out.print("\n");
             }
+
             this.applySelection();
             this.applyCrossover(crossoverIntensity);
-            this.applyMutation();
+            
+            
+            
 
         }        
     }

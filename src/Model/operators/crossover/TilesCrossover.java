@@ -31,7 +31,7 @@ public class TilesCrossover extends CrossoverOperator<CityTileset> {
      * @return Population of offspring CityTilesets after crossover.
      */
     public CityTilesetPopulation apply(CityTilesetPopulation pop) {
-        size = pop.getArrayList().get(1).getSize();
+        size = pop.getArrayList().get(0).getSize();
         totalTiles = size * size;
 
         // Initialize offspring population
@@ -42,16 +42,53 @@ public class TilesCrossover extends CrossoverOperator<CityTileset> {
 
         // Apply crossover to each pairing
         for (Pairing pairing : pairings) {
+        	// Get parks for each parent
+        	TreeSet<Position> parksFirst = new TreeSet<>(pairing.firstParent.getArrayOfParkPositions());
+        	TreeSet<Position> parksSecond = new TreeSet<>(pairing.secondParent.getArrayOfParkPositions());
+        
             // Generate random cutoff points for crossover
             Set<Integer> cutOffPoints = generateCutOffPoints();
 
-            // Perform crossover on the pair
-            CityTileset offspring1 = crossover(pairing.firstParent, pairing.secondParent, new TreeSet<>(cutOffPoints));
-            CityTileset offspring2 = crossover(pairing.secondParent, pairing.firstParent, cutOffPoints);
+            // Get pairs of start and end indices for crossover segments
+            int[][] pairs = getPairs((TreeSet<Integer>) cutOffPoints);
 
+            // Perform crossover for each segment
+            for (int[] pair : pairs) {
+                int start = pair[0];
+                int end = pair[1] != -1 ? pair[1] : (totalTiles - 1);
+
+                // Convert 1D index to 2D coordinates
+                int xStart = start % size;
+                int yStart = start / size;
+                int xEnd = end % size;
+                int yEnd = end / size;
+                
+                // Extract park segments for each parent
+                TreeSet<Position> exchangeFirst = new TreeSet<>(parksFirst.subSet(new Position(xStart, yStart), new Position(xEnd, yEnd)));
+                TreeSet<Position> exchangeSecond = new TreeSet<>(parksSecond.subSet(new Position(xStart, yStart), new Position(xEnd, yEnd)));
+                
+                // Identify common parks in the segments
+                TreeSet<Position> commonParks = new TreeSet<>(exchangeFirst);
+                commonParks.retainAll(exchangeSecond);
+                
+                // Remove common parks from the exchange sets
+                exchangeFirst.removeAll(commonParks);
+                exchangeSecond.removeAll(commonParks);
+                
+                // Swap parks between parents
+                for(Position pos: exchangeFirst) {
+                	pairing.firstParent.removeParkTile(pos);
+                	pairing.secondParent.NewParkTile(pos);
+                }
+                
+                for(Position pos: exchangeSecond) {
+                	pairing.secondParent.removeParkTile(pos);
+                	pairing.firstParent.NewParkTile(pos);
+                }          
+            }
             // Add offspring to the population
-            offsprings.add(offspring1);
-            offsprings.add(offspring2);
+            offsprings.add(pairing.firstParent);
+            offsprings.add(pairing.secondParent);
         }
 
         return offsprings;
@@ -70,6 +107,7 @@ public class TilesCrossover extends CrossoverOperator<CityTileset> {
         return cutOffPoints;
     }
 
+    
     /**
      * Performs crossover on two parent CityTilesets using specified cutoff points.
      *
@@ -77,9 +115,11 @@ public class TilesCrossover extends CrossoverOperator<CityTileset> {
      * @param secondParent  Second parent CityTileset.
      * @param cutOffPoints  Set of cutoff points for crossover segments.
      * @return Offspring CityTileset after crossover.
-     */
+     *//*
     private CityTileset crossover(CityTileset firstParent, CityTileset secondParent, Set<Integer> cutOffPoints) {
-        // Create offspring as a copy of the first parent
+    	TreeSet<Position> parks = new TreeSet<>(firstParent.getArrayOfParkPositions());
+    	
+    	// Create offspring as a copy of the first parent
         CityTileset offspring = new CityTileset(firstParent);
 
         // Get pairs of start and end indices for crossover segments
@@ -95,6 +135,8 @@ public class TilesCrossover extends CrossoverOperator<CityTileset> {
             int yStart = start / size;
             int xEnd = end % size;
             int yEnd = end / size;
+            
+            TreeSet<Position> aux = new TreeSet<>(parks.subSet(new Position(xStart, yStart), new Position(xEnd, yEnd)));
 
             // Copy tiles from the second parent to the offspring
             for (int y = yStart; y <= yEnd; y++) {
@@ -102,20 +144,11 @@ public class TilesCrossover extends CrossoverOperator<CityTileset> {
                     offspring.setTile(x, y, secondParent.getTile(x, y));
                 }
             }
-            /*
-            if (yStart > yEnd) {
-            int temp = yStart;
-            yStart = yEnd;
-            yEnd = temp;
-            }
             
-            offspring.setTiles(new Position(xStart, yStart),
-            secondParent.getTiles(new Position(xStart, yStart),
-            new Position(xEnd, yEnd)));*/
         }
 
         return offspring;
-    }
+    }*/
 
     /**
      * Converts a sorted set of cutoff points into pairs of start and end indices.
