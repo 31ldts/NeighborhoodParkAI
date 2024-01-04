@@ -30,9 +30,10 @@ public class ParkExpansionMutation {
      *
      * @param pop The population of city tilesets.
      */
-    public void apply(Population<CityTileset> pop) {
+    public void apply(Population<CityTileset> pop, boolean extraMut) {
+    	double prob = extraMut ? 0.5:MUTATIONPROB;
         for (CityTileset city : pop) {
-            if (generator.nextDouble() < MUTATIONPROB) {
+            if (generator.nextDouble() < prob) {
                 if (generator.nextDouble() < EXTENDPROB) {
                     Position auxPos = getRandomVoidPosition(city);
                     city.NewParkTile(auxPos);

@@ -16,6 +16,9 @@ public class MutationController {
     private PointNeighborhoodMutation pnm;
     private TargetedNeighborhoodMutation tnm;
     private ParkExpansionMutation pem;
+    private int counter = 1;
+    private int counterRandom = 0;
+    private double lastUpdate = 0.0;
 
     /**
      * Constructs a MutationController with specified mutation probabilities and parameters.
@@ -35,10 +38,56 @@ public class MutationController {
      *
      * @param pop Population of CityTilesets.
      */
-    public void apply(Population<CityTileset> pop){
+    public void apply(Population<CityTileset> pop, boolean ending){
+    	/*if ((pop.getBestIndividual().getFitness() == lastUpdate)&&(counter < 10)){
+    		counter++;
+    	}else {
+    		counter = 0;
+    	}
+    	boolean extraMut = counter >= 10;
     	//rpm.apply(pop);
     	//pnm.apply(pop);
-    	tnm.apply(pop);
+    	if(extraMut) {
+    		counterRandom++;
+    		if(counterRandom == 5) {
+    			rpm.apply(pop);
+    			counterRandom = 0;
+    		}
+    	}
+    	tnm.apply(pop, extraMut);
+    	//pem.apply(pop);*/
+    	if(ending) {
+    		tnm.apply(pop, false);
+    	}else {
+	    	if (pop.getBestIndividual().getFitness() == lastUpdate){
+	    		counter++;
+	    	}else {
+	    		counter = 1;
+	    	}
+	    	if(counter % 100 == 0) {
+	    		pem.apply(pop, true);
+	    	}else if(counter > 50) {
+	    		pem.apply(pop, false);
+	    	}else if(counter > 20) {
+	    		rpm.apply(pop);
+	    	}else if(counter % 10 == 0) {
+	    		tnm.apply(pop, true);
+	    	}else {
+	    		tnm.apply(pop, false);
+	    	}
+    	}
+    	/*
+    	extraMut = counter >= 10;
+    	//rpm.apply(pop);
+    	//pnm.apply(pop);
+    	if(extraMut) {
+    		counterRandom++;
+    		if(counterRandom == 5) {
+    			rpm.apply(pop);
+    			counterRandom = 0;
+    		}
+    	}
+    	tnm.apply(pop, extraMut);*/
     	//pem.apply(pop);
     }
 }

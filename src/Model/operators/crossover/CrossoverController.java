@@ -32,9 +32,9 @@ public class CrossoverController {
     
     public CityTilesetPopulation apply(CityTilesetPopulation pop, int intensity){
         this.REPETITIONS = intensity;
-        /*if(generator.nextDouble() < mp.getCROSSOVERPROB())
+        if(generator.nextDouble() < mp.getCROSSOVERPROB())
             return nc.apply(pop,generator);
-        else return pop;*/
-        return tc.apply(pop);
+        else return pop;
+        //return tc.apply(pop);
     }
 }

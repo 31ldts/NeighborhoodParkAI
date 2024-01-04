@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Model;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import Model.Individuals.CityTileset;
 import Model.Individuals.CityTilesetPopulation;
 import Model.Individuals.Population;
@@ -62,38 +65,56 @@ public class ParksInCityGA {
      * 2.3) Apply crossover operation to population
      */
     public void run(){
-        pop = initializer.Inicialize();
-        int crossoverIntensity = mp.getCROSSOVERINTENSITY()*2;
+    	String data = "";
+    	for(int j = 0; j<3; j++) {
+	        pop = initializer.Inicialize();
+	        int crossoverIntensity = mp.getCROSSOVERINTENSITY()*2;
+	        
+	        this.applyFitness();
+	        
+	        data += "Generation Best\n";
+	        
+	        for(int i = 0; i < repetitionLimits; ++i){
+	            
+	            if(i%(repetitionLimits/10) == 0){
+	                crossoverIntensity *= 0.9;
+	            }
+	            
+	            this.applyFitness();
+	            
+	            this.applyMutation(i > (repetitionLimits - 100));
+	            this.applyFitness();
+	            if(i % 100 == 0){
+	                System.out.print("\n\n Generation " + i + ": " + "\n");
+	                for(CityTileset ct : pop){
+	                    System.out.print(ct.getFitness() + " ");
+	                }
+	                System.out.print("\nBest individual: " + 
+	                        pop.getBestIndividual().getFitness() + "\t#Parks: " + pop.getBestIndividual().getNparkTiles());
+	                System.out.print("\n");
+	                data += String.valueOf(i) + " " + String.valueOf(pop.getBestIndividual().getFitness()) + "\n";
+	            }
+	
+	            this.applySelection();
+	            this.applyCrossover(crossoverIntensity);
+	            
+	
+	        }
+	        this.applyFitness();
+	        System.out.print("\n\n Generation " + repetitionLimits + ": " + "\n");
+	        for(CityTileset ct : pop){
+	            System.out.print(ct.getFitness() + " ");
+	        }
+	        System.out.print("\nBest individual: " + 
+	                pop.getBestIndividual().getFitness() + "\t#Parks: " + pop.getBestIndividual().getNparkTiles());
+	        System.out.print("\n");
+	        
+	        data += String.valueOf(repetitionLimits) + " " + String.valueOf(pop.getBestIndividual().getFitness()) + "\n";
+	
+	        
+    	}
+        System.out.println(data);
         
-        this.applyFitness();
-        
-        for(int i = 0; i < repetitionLimits; ++i){
-            
-            if(i%(repetitionLimits/10) == 0){
-                crossoverIntensity *= 0.9;
-            }
-            
-            //this.applyFitness();
-            
-            this.applyMutation();
-            this.applyFitness();
-            if(i % (repetitionLimits/10) == 0){
-                System.out.print("\n\n Generation " + i + ": " + "\n");
-                for(CityTileset ct : pop){
-                    System.out.print(ct.getFitness() + " ");
-                }
-                System.out.print("\nBest individual: " + 
-                        pop.getBestIndividual().getFitness());
-                System.out.print("\n");
-            }
-
-            this.applySelection();
-            this.applyCrossover(crossoverIntensity);
-            
-            
-            
-
-        }        
     }
     
     /**
@@ -125,8 +146,8 @@ public class ParksInCityGA {
         pop = selection.apply(pop);
     }
     
-    public void applyMutation(){
-        mutation.apply(pop);
+    public void applyMutation(boolean ending){
+        mutation.apply(pop, ending);
     }
     
     /**

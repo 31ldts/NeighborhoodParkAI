@@ -35,7 +35,9 @@ public class TargetedNeighborhoodMutation extends MutationHandler {
      *
      * @param pop Population of city tilesets.
      */
-    public void apply(Population<CityTileset> pop) {
+    public void apply(Population<CityTileset> pop, boolean extraMut) {
+    	double prob = extraMut ? 0.5:MUTATIONPROB;
+    	
         int nNeighborhoods = pop.getArrayList().get(0).getTotalNeighborhoods();
         int row = pop.getArrayList().get(0).getNNeighborhood();
 
@@ -63,7 +65,7 @@ public class TargetedNeighborhoodMutation extends MutationHandler {
                 // Get the parks in the selected neighborhood
                 List<Position> parks = city.getNeighborhoodParks(new Position(entry.getKey() % 4, entry.getKey() / 4));
                 // Apply mutation to the city for the selected neighborhoods
-                this.mutate(city, parks.toArray(new Position[0]), MUTATIONPROB);
+                this.mutate(city, parks.toArray(new Position[0]), prob);
             }
         }
     }

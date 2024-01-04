@@ -38,16 +38,16 @@ public class ModelParameters {
     ///< Size of the truncation if used.
     
     //Stop condition 
-    public final static int MAXREPETITIONLIMIT = 1000;
+    public final static int MAXREPETITIONLIMIT = 3000;
     ///< Max iterations of the algorithm.
-    public final static int DEFREPETITIONLIMIT = 1000;
+    public final static int DEFREPETITIONLIMIT = 3000;
     ///< Default iterations of the algorithm.
     public final static int MINREPETITIONLIMIT = 2;
     ///< Min iterations of the algorithm.
 
     //Mutation
-    private final double MUTATIONPROB = 0.4;	//Mutation probability
-    private final int POINTNEIGHMUT = 1;		//Point mutation neighborhoods
+    private final double MUTATIONPROB = 0.01;	//Mutation probability
+    private final int POINTNEIGHMUT = 4;		//Point mutation neighborhoods
     
     private int repetitionLimits;
     
