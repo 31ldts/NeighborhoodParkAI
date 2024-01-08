@@ -6,9 +6,10 @@ The project has been built in Java, using the IDE NetBeans. Using the clone opti
 In this project we use a system of "Controllers". Due to Genetic Algorithms having very distinct parts (Inicializer, Mutation, Crossover, Selection, fitness...) and because we wanted to implement more than one class for each one, we use controllers to decide what class we use and how we use it, even if we mix classes (use two types of mutations).
 
 Inside the folder "src" there are the source files of the porject, splited in the packages "Basic", "Model" and "Views".
-  -Basic: This package just contains the class Position and a sort class for it.
+    
+    -Basic: This package just contains the class Position and a sort class for it.
   
-  -Model: This package contains all the important files of the project, splited in sub-packages. Outside the subpackages there are the parammeters class and the "ParkInCityGA" file, that executes the Genetic Algorithm.
+    -Model: This package contains all the important files of the project, splited in sub-packages. Outside the subpackages there are the parammeters class and the "ParkInCityGA" file, that executes the Genetic Algorithm.
     
     -Individuals: Contains all the necessary files to codify an individual: 
                     Tiles(ParkTile,BuildingTile...), being the smallest part of a city; 
