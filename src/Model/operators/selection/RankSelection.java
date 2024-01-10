@@ -45,7 +45,7 @@ public class RankSelection {
             ++i;
             i %= sortedPop.size();
         }
-        System.out.print(i);
+        //System.out.print(i);
         
         //while(aux.add(sortedPop.get(generator.nextInt(sortedPop.size())))){}
             
